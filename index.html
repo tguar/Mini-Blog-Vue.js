@@ -50,23 +50,20 @@
 				<blog-post
 					v-for="(post, index) in posts"
 					v-bind:key="post.id"
-					v-bind:title="post.title"
-					v-bind:content="post.content"
-					v-bind:id="post.id"
-					v-bind:posted-date-time="post.postedDateTime"
+					v-bind:post="post"
 					v-on:click.native.once="removePost(index, $event)">
 				</blog-post>
 			</div>
 		</div>
 		<script>					
 			Vue.component('blog-post', {
-				props: ['id', 'title', 'posted-date-time', 'content'],
+				props: ['post'],
 				template: `
 				<div class="card m-2 mx-auto half-width">
 					<div class="card-body">
-						<h5 class="text-center blog-title"> {{title}}</h5>
-						<h6 class="text-center card-subtitle mb-2 title"> Post #{{id}} <span class="text-muted"> at {{postedDateTime}} </span> </h6>
-						<p class="card=text"> {{content}} </p>
+						<h5 class="text-center blog-title"> {{post.title}}</h5>
+						<h6 class="text-center card-subtitle mb-2 title"> Post #{{post.id}} <span class="text-muted"> at {{post.postedDateTime}} </span> </h6>
+						<p class="card=text"> {{post.content}} </p>
 					</div>
 				</div>
 				`	
