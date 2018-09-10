@@ -49,13 +49,17 @@
 				</div>
 			</div>
 			
-			<div class="mx-auto half-width">
-				<input type="checkbox" class="form-check-input-inline" id="checkbox" v-model= "isReversed">
-				<label for="checkbox"> Reverse List </label>
-			</div>
-			</div>
-			
-			<hr class="half-width" v-if="show">
+			<transition name="custom-classes-transition"
+						enter-active-class="animated fadeIn"
+						leave-active-class="animated fadeOut">
+				<div class="mx-auto half-width" v-if="show">
+					<input type="checkbox" class="form-check-input-inline" id="checkbox" v-model= "isReversed">
+					<label for="checkbox"> Reverse List </label>
+				</div>
+				</div>
+				
+				<hr class="half-width" v-if="show">
+			</transition>
 			
 			<div class="flex-container">
 				<blog-post
@@ -111,7 +115,7 @@
 				},
 				methods: {
 					addPost: function()
-					{
+					{						
 						this.posts.push({
 							id: this.computeId(),
 							title: this.post.title,
@@ -120,6 +124,8 @@
 						})
 						this.post.title = '';
 						this.post.content = '';
+						
+						this.showListHelperElements();
 					},
 					removePost: function(index, event)
 					{
@@ -130,9 +136,11 @@
 						else
 						{
 							this.posts.splice(index, 1);
-						}					
+						}
+						
+						this.showListHelperElements();					
 					},
-					updateHr: function()
+					showListHelperElements: function()
 					{
 						if(this.posts.length === 0)
 						{
