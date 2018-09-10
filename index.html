@@ -45,7 +45,14 @@
 					<textarea style="width:100%" class="blog-content" rows="4" cols=82 placeholder="Start typing then hit enter to post" v-model="post.content" @keyup.enter="addPost"></textarea>
 				</div>
 			</div>
-			<hr class="half-width">
+			
+			<div class="mx-auto half-width">
+				<input type="checkbox" class="form-check-input-inline" id="checkbox">
+				<label for"checkbox"> Reverse List </label>
+			</div
+			
+			<hr class="half-width" v-if="show">
+			
 			<div class="flex-container">
 				<blog-post
 					v-for="(post, index) in posts"
@@ -77,28 +84,65 @@
 						{id: 2, title: "Did You Know?", postedDateTime: "9/5/2018 5:01:00 PM", content: "You can click anywhere on a card to delete it? Try it out."},
 						{id: 3, title: "Another Post", postedDateTime: "9/6/2018 3:31:32 PM", content: "Urna nec tincidunt praesent semper feugiat nibh sed. Euismod in pellentesque massa placerat duis ultricies lacus sed. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel. Eget felis eget nunc lobortis mattis aliquam faucibus purus in. Vestibulum lorem sed risus ultricies tristique nulla. Ut enim blandit volutpat maecenas volutpat. Leo a diam sollicitudin tempor id eu nisl. Quis ipsum suspendisse ultrices gravida dictum fusce ut. "}
 					],
-					post: {title: "", content: "" }
+					post: {title: "", content: "" },
+					show: true,
+					isReversed: false
 				},
+				computed: {
+					computedPosts() {
+						if(this.isReversed)
+						{
+							return this.posts.slice().reverse();
+						}
+						else					
+							return this.posts;
+						}
+					}
+				}
 				methods: {
 					addPost: function()
 					{
-						var title = this.post.title;
-						var content = this.post.content;
-						var postedDateTime = new Date().toLocaleString();
-						var newId = this.posts[this.posts.length-1].id + 1;
 						this.posts.push({
-							id: newId,
-							title: title,
-							postedDateTime: postedDateTime,
-							content: content
+							id: this.computeId(),
+							title: this.post.title,
+							postedDateTime: new Date().toLocaleString(),
+							content: this.post.content
 						})
 						this.post.title = '';
 						this.post.content = '';
 					},
 					removePost: function(index, event)
 					{
-						//Removed event fade, might try later on
-						this.posts.splice(index, 1);
+						if(this.isReversed)
+						{
+							this.posts.splice((this.posts.length-1)-index, 1);
+						}
+						else
+						{
+							this.posts.splice(index, 1);
+						}					
+					},
+					updateHr: function()
+					{
+						if(this.posts.length === 0)
+						{
+							this.show = false;	
+						}
+						else
+						{
+							this.show = true;
+						}
+					},
+					computeId: function()
+					{
+						if(this.posts.length === 0)
+						{
+							return 1;
+						}
+						else 
+						{
+							return this.posts[this.posts.length-1].id + 1;
+						}
 					}
 				}
 			})
