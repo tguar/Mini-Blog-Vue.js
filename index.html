@@ -38,7 +38,7 @@
 		<div id="mini-blog">
 			<div class="card m-2 mx-auto half-width">
 				<div class="card-body">
-					<input class = "blog-title title" autofocus autocomplete="off"
+					<input class = "blog-title title" autocomplete="off"
 						placeholder="Blog Title"
 						v-model="post.title"
 						@keyup.enter="$event.target.nextElementSibling.focus()">
@@ -55,7 +55,7 @@
 			
 			<div class="flex-container">
 				<blog-post
-					v-for="(post, index) in posts"
+					v-for="(post, index) in computedPosts"
 					v-bind:key="post.id"
 					v-bind:post="post"
 					v-on:click.native.once="removePost(index, $event)">
@@ -94,11 +94,12 @@
 						{
 							return this.posts.slice().reverse();
 						}
-						else					
+						else
+						{					
 							return this.posts;
 						}
 					}
-				}
+				},
 				methods: {
 					addPost: function()
 					{
